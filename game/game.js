@@ -234,4 +234,69 @@ function generaCasesInicials() {
 
 /* ============================================================================================
    CONTROLS DEL JUGADOR
-   ====================
+   ============================================================================================ */
+
+let teclas = {};
+
+/* Pausa */
+function togglePause() {
+    if (estat === "playing") estat = "paused";
+    else if (estat === "paused") estat = "playing";
+}
+
+/* Tecles pressionades */
+document.addEventListener("keydown", e => {
+    if (e.code === "Space" && estat === "playing") {
+        regals.push({
+            x: santa.x + santa.w / 2 - 5,
+            y: santa.y + santa.h,
+            w: 10,
+            h: 10
+        });
+    }
+});
+
+/* Redueix vida i reinicia combo */
+function perdVida(amount = 1) {
+    vides -= amount;
+    combo = 0;  // Perds racha
+    if (vides <= 0) {
+        vides = 0;
+        estat = "gameover";
+    }
+}
+
+/* ============================================================================================
+   UPDATE DEL JOC
+   ============================================================================================ */
+
+function update() {
+    if (estat !== "playing") return;
+
+    /* Actualitzar moviment de neu */
+    updateNeu();
+
+    /* Moviment del Pare Noel: WASD + Fletxes */
+    if (teclas["KeyA"] || teclas["ArrowLeft"])  santa.x -= santa.speed;
+    if (teclas["KeyD"] || teclas["ArrowRight"]) santa.x += santa.speed;
+    if (teclas["KeyW"] || teclas["ArrowUp"])    santa.y -= santa.speed;
+    if (teclas["KeyS"] || teclas["ArrowDown"])  santa.y += santa.speed;
+
+    /* Límits de moviment */
+    santa.x = Math.max(0, Math.min(canvas.width - santa.w, santa.x));
+    santa.y = Math.max(10, Math.min(canvas.height - santa.h - 10, santa.y));
+}
+
+/* ============================================================================================
+   DIBUIX DEL JOC
+   ============================================================================================ */
+
+function draw() {
+    dibuixaNit();
+    dibuixaSkyline();
+    dibuixaNeu();
+    dibuixaCases();
+    dibuixaSantaIRen();
+}
+
+requestAnimationFrame(loop);
