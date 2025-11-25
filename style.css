@@ -1,48 +1,59 @@
-/* Estils bàsics: fons fosc, text blanc, canvas centrat */
+/* Estilos generales */
 body {
     margin: 0;
-    background: #000814;
-    overflow: hidden;
+    padding: 0;
     font-family: Arial, sans-serif;
-    color: white;
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    user-select: none;
+    background-color: #f0f8ff;
+    text-align: center;
+    color: #333;
 }
 
-/* Marcador de punts */
-#score {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    font-size: 24px;
-    z-index: 10;
+h1 {
+    font-size: 3em;
+    margin-top: 20px;
+    color: #ff5733;  /* Rojo navideño */
 }
 
-/* Botó de pausa */
-#pauseBtn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    z-index: 10;
-    padding: 6px 14px;
-    background: #ffcc00;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: bold;
+.description {
+    font-size: 1.2em;
+    color: #555;
+    margin-top: 10px;
 }
 
-#pauseBtn:hover {
-    background: #ffd94d;
-}
-
-/* Canvas del joc */
-canvas {
-    display: block;
-    margin: 0 auto;
-    background: #001233;
-    touch-action: none;
-    max-width: 100%;
+.image {
+    max-width: 80%;
     height: auto;
+    margin-top: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.qr-container {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.qr-container p {
+    font-size: 1.2em;
+    color: #333;
+}
+
+.qr {
+    margin-top: 20px;
+    max-width: 200px;
+    height: auto;
+    border: 2px solid #333;
+    border-radius: 10px;
+    padding: 10px;
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.content {
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    margin: 30px auto;
+    max-width: 600px;
 }
