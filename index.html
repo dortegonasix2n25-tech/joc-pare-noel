@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+v<!DOCTYPE html>
 <html lang="ca">
 <head>
     <meta charset="UTF-8">
@@ -7,17 +7,17 @@
     <link rel="stylesheet" href="style.css">
     <style>
         body {
-            background-color: #001233; /* Fondo oscuro navideño */
+            background-color: #ff3b3f; /* Fondo rojo navideño */
             color: white;
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
             flex-direction: column;
-            overflow: hidden;
             position: relative;
+            overflow: hidden;
         }
 
         .content {
@@ -28,7 +28,7 @@
         }
 
         h1 {
-            font-size: 3em;
+            font-size: 3.5em;
             margin-bottom: 20px;
             color: #ffcc00;
             text-shadow: 2px 2px 4px #000;
@@ -37,6 +37,9 @@
         .description {
             font-size: 1.2em;
             margin-bottom: 20px;
+            max-width: 80%;
+            margin: 0 auto;
+            font-weight: bold;
         }
 
         .qr-container {
@@ -64,7 +67,41 @@
             border-radius: 10px;
         }
 
-        /* Animación de nieve */
+        .tree-container {
+            position: absolute;
+            bottom: 10px;
+            right: 10%;
+            z-index: 1;
+            width: 250px;
+        }
+
+        .tree {
+            width: 100%;
+        }
+
+        .button-container {
+            margin-top: 30px;
+            z-index: 2;
+        }
+
+        .button-container button {
+            background-color: #ffcc00;
+            padding: 15px 30px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            color: black;
+            font-weight: bold;
+            box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5);
+            transition: background-color 0.3s;
+        }
+
+        .button-container button:hover {
+            background-color: #ffd94d;
+        }
+
+        /* Decoración de nieve */
         .snowflakes {
             position: absolute;
             top: 0;
@@ -90,29 +127,6 @@
             0% { transform: translateY(0); }
             100% { transform: translateY(100vh); }
         }
-
-        /* Estilo para los botones */
-        .button-container {
-            margin-top: 30px;
-            z-index: 2;
-        }
-
-        .button-container button {
-            background-color: #ffcc00;
-            padding: 15px 30px;
-            font-size: 18px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            color: black;
-            font-weight: bold;
-            box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5);
-            transition: background-color 0.3s;
-        }
-
-        .button-container button:hover {
-            background-color: #ffd94d;
-        }
     </style>
 </head>
 <body>
@@ -129,7 +143,7 @@
     <div class="content">
         <!-- Título del juego -->
         <h1>Pare Noel Pixel Game</h1>
-        <p class="description">¡Escaneja el codi QR o visita el joc navideño del Pare Noel!</p>
+        <p class="description">¡Escaneja el codi QR per jugar al joc nadalenc del Pare Noel!</p>
 
         <!-- Imagen navideña decorativa -->
         <img src="navidad.png" alt="Imagen navideña decorativa" class="decorative-image">
@@ -140,12 +154,17 @@
             <img src="https://api.qrserver.com/v1/create-qr-code/?data=https://dortegonasix2n25-tech.github.io/joc-pare-noel/game/&size=200x200" alt="QR Code" class="qr">
         </div>
 
-        <p>¡Diviértete jugant! 🎄🎅</p>
+        <p>¡Disfruta jugant! 🎄🎅</p>
 
         <!-- Botón Jugar -->
         <div class="button-container">
             <button onclick="startGame()">Jugar</button>
         </div>
+    </div>
+
+    <!-- Árbol de Navidad -->
+    <div class="tree-container">
+        <img src="tree.png" alt="Árbol de Navidad" class="tree">
     </div>
 
     <script>
