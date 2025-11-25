@@ -62,6 +62,25 @@ document.getElementById("launchGift").addEventListener("click", () => {
     // Aquí iría la lógica de lanzar el regalo
 });
 
-update(); // Comienza el ciclo del juego
+// 🎁 INICIO: LÓGICA DE PANTALLA COMPLETA 🎁
 
+function toggleFullScreen() {
+    if (!document.fullscreenElement) {
+        // Solicita pantalla completa para todo el documento
+        document.documentElement.requestFullscreen().catch(err => {
+            console.log(`Error al intentar habilitar pantalla completa: ${err.message} (${err.name})`);
+        });
+    } else {
+        // Sale de pantalla completa
+        document.exitFullscreen();
+    }
+}
 
+// Asegúrate de tener un botón con id="fullscreenButton" en tu HTML
+document.getElementById("fullscreenButton").addEventListener("click", toggleFullScreen);
+
+// 🎁 FIN: LÓGICA DE PANTALLA COMPLETA 🎁
+
+// Iniciar los bucles del juego
+setInterval(update, 1000 / 60); // 60 FPS para la lógica de actualización
+requestAnimationFrame(draw); // Lanza el bucle de dibujo
