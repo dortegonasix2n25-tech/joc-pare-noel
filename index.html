@@ -5,12 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pare Noel Pixel Game</title>
     <link rel="stylesheet" href="style.css">
-    <!-- Redirección automática al juego después de 3 segundos -->
-    <script>
-        setTimeout(function() {
-            window.location.href = "https://dortegonasix2n25-tech.github.io/joc-pare-noel/"; // URL del juego
-        }, 3000); // 3 segundos de espera antes de la redirección
-    </script>
 </head>
 <body>
     <!-- Contenedor principal -->
@@ -25,11 +19,22 @@
         <!-- Código QR -->
         <div class="qr-container">
             <p>Escanea este QR para empezar:</p>
-            <!-- El QR sigue apuntando al mismo enlace de GitHub Pages -->
             <img src="https://api.qrserver.com/v1/create-qr-code/?data=https://dortegonasix2n25-tech.github.io/joc-pare-noel/&size=200x200" alt="QR Code" class="qr">
+        </div>
+
+        <!-- Botón Jugar -->
+        <div class="button-container">
+            <button onclick="startGame()">Jugar</button>
         </div>
 
         <p>¡Diviértete jugando! 🎄🎅</p>
     </div>
+
+    <script>
+        function startGame() {
+            // Redirige a la página del juego
+            window.location.href = "https://dortegonasix2n25-tech.github.io/joc-pare-noel/";
+        }
+    </script>
 </body>
 </html>
