@@ -7,6 +7,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet"> 
     
     <style>
+        /* Importació de la font Pixelada */
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+        
         /* Estils Base i Fons: Més Professional i Nadalenc */
         body {
             /* Fons: Gradient de blau fosc (nit) a vermell (nadal) */
@@ -31,7 +34,8 @@
             border-radius: 15px;
             max-width: 90%;
             width: 550px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 0 5px #ffcc00; /* Ombra i marc daurat */
+            /* Ombra i marc daurat */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 0 5px #ffcc00; 
             z-index: 10; 
             margin: 20px auto;
         }
@@ -109,16 +113,13 @@
             font-weight: normal;
         }
 
-        /* Decoració (Simplificada per no dependre d'imatges externes) */
-        .decorative-image {
-            display: none; /* Oculta la imatge decorativa per centrar el contingut */
-        }
-        .tree-container {
-            display: none; /* Oculta l'arbre per no trencar el disseny sense la imatge */
+        /* Decoració (Elements que s'han decidit ocultar) */
+        .decorative-image, .tree-container {
+            display: none; 
         }
 
-        /* Neu (Millorada) */
-        .snowflakes {
+        /* Neu (Millorada - Classes usades al JS dinàmic) */
+        #snow-layer {
             position: absolute;
             top: 0;
             left: 0;
@@ -162,7 +163,7 @@
         <div class="qr-container">
             <p>Escaneja aquest QR per jugar al mòbil:</p>
             <img 
-                src="https://api.qrserver.com/v1/create-qr-code/?data=https://dortegonasix2n25-tech.github.io/joc-pare-noel/game/&size=200x200" 
+                src="https://api.qrserver.com/v1/create-qr-code/?data=https://dortegonasix2n25-tech.github.io/joc-pare-noel/&size=200x200" 
                 alt="QR Code per al Joc" 
                 class="qr"
             >
@@ -179,10 +180,10 @@
     </div>
 
 <script>
-    // Funció per iniciar el joc (manté la funcionalitat original)
+    // Funció per iniciar el joc
     function startGame() {
-        // Redirigeix al subdirectori "game/" on està el joc
-        window.location.href = "game/"; 
+        // CORREGIT: Utilitza la URL absoluta proporcionada per l'usuari.
+        window.location.href = "https://dortegonasix2n25-tech.github.io/joc-pare-noel/"; 
     }
     
     // Funció per generar la neu dinàmicament (millora visual)
