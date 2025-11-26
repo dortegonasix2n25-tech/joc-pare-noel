@@ -41,14 +41,14 @@
         }
 
         h1 {
-            font-size: 1.8em; /* Mida ajustada per la font retro */
+            font-size: 1.8em; 
             margin-bottom: 20px;
             color: #ffcc00; /* Daura cridaner */
             text-shadow: 2px 2px 4px #000;
         }
 
         .description {
-            font-size: 0.8em; /* Font més petita per la Press Start 2P */
+            font-size: 0.8em; 
             margin-bottom: 25px;
             max-width: 100%;
             font-weight: normal;
@@ -62,7 +62,7 @@
             padding: 15px;
             border: 2px dashed #a8e6ff; /* Marc més elegant */
             border-radius: 10px;
-            display: inline-block; /* Per envoltar només el contingut */
+            display: inline-block; 
         }
 
         .qr-container p {
@@ -113,11 +113,6 @@
             font-weight: normal;
         }
 
-        /* Decoració (Elements que s'han decidit ocultar) */
-        .decorative-image, .tree-container {
-            display: none; 
-        }
-
         /* Neu (Millorada - Classes usades al JS dinàmic) */
         #snow-layer {
             position: absolute;
@@ -132,7 +127,7 @@
         .snowflake {
             position: absolute;
             top: -10px;
-            width: 4px; /* Més petits i nombrosos */
+            width: 4px; 
             height: 4px;
             background: white;
             border-radius: 50%;
@@ -142,7 +137,7 @@
 
         @keyframes fall {
             0% { transform: translateY(0) translateX(0); }
-            100% { transform: translateY(100vh) translateX(50px); } /* Caiguda amb lleuger moviment horitzontal */
+            100% { transform: translateY(100vh) translateX(50px); } 
         }
     </style>
 </head>
@@ -180,28 +175,24 @@
     </div>
 
 <script>
-    // Funció per iniciar el joc
+    // Funció per iniciar el joc (Utilitza la URL CORREGIDA)
     function startGame() {
-        // CORREGIT: Utilitza la URL absoluta proporcionada per l'usuari.
         window.location.href = "https://dortegonasix2n25-tech.github.io/joc-pare-noel/"; 
     }
     
-    // Funció per generar la neu dinàmicament (millora visual)
+    // Funció per generar la neu dinàmicament
     function createSnowflakes() {
         const snowLayer = document.getElementById('snow-layer');
-        const numberOfSnowflakes = 80; // Més flocs de neu
+        const numberOfSnowflakes = 80;
 
         for (let i = 0; i < numberOfSnowflakes; i++) {
             const snowflake = document.createElement('div');
             snowflake.className = 'snowflake';
             
-            // Posició inicial aleatòria
             snowflake.style.left = Math.random() * 100 + '%';
-            
-            // Variació de la velocitat i direcció
-            const duration = 8 + Math.random() * 8; // 8s a 16s
+            const duration = 8 + Math.random() * 8; 
             const delay = Math.random() * 10;
-            const size = 3 + Math.random() * 4; // Mida petita i variable
+            const size = 3 + Math.random() * 4; 
             
             snowflake.style.animationDuration = duration + 's';
             snowflake.style.animationDelay = delay + 's';
@@ -212,7 +203,7 @@
         }
     }
     
-    // Crida per iniciar la neu
+    // Inicia la neu
     createSnowflakes();
 </script>
 </body>
