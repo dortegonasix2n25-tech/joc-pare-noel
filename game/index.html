@@ -103,15 +103,21 @@
     }
     
     /* NOVES LÍNIES: PANTALLA COMPLETA - Estil quan el BODY està en Fullscreen */
-    body:-webkit-full-screen, body:-moz-full-screen, body:-ms-fullscreen, body:fullscreen {
+    /* Utilitzem documentElement (html) per al fullscreen, però les regles s'apliquen al viewport */
+    html:-webkit-full-screen, html:-moz-full-screen, html:-ms-fullscreen, html:fullscreen {
         width: 100vw;
         height: 100vh;
-        max-height: 100vh;
     }
-    
+
     /* Assegura que el canvas i els controls ocupin tot l'espai en fullscreen */
-    body:-webkit-full-screen canvas, body:-moz-full-screen canvas, body:-ms-fullscreen canvas, body:fullscreen canvas {
-        max-height: 100vh;
+    /* Important: en mode fullscreen, eliminem el límit de max-height del canvas */
+    html:-webkit-full-screen body, html:-moz-full-screen body, html:-ms-fullscreen body, html:fullscreen body {
+        height: 100%; /* El body ha d'ocupar el 100% de l'html */
+    }
+
+    html:-webkit-full-screen canvas, html:-moz-full-screen canvas, html:-ms-fullscreen canvas, html:fullscreen canvas {
+        max-height: calc(100vh - 80px); /* Ajustem només per deixar espai als controls tàctils */
+        object-fit: contain; /* Assegura que el contingut es vegi sencer sense tallar-se */
     }
     /* FI NOVES LÍNIES: PANTALLA COMPLETA */
 
@@ -203,7 +209,7 @@ const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
 const pauseBtn = document.getElementById("pauseBtn");
 const startBtn = document.getElementById("startBtn"); 
-// NOVA LÍNIA: PANTALLA COMPLETA - Referència al botó de fullscreen
+// NOVA REFERÈNCIA: PANTALLA COMPLETA
 const fullscreenBtn = document.getElementById("fullscreenBtn");
 
 /* Controls Tàctils (Afegir referències) */
@@ -270,30 +276,25 @@ function resetGame() {
 resetGame();
 
 /* ============================================================================================
-    FUNCIONS DE REDIMENSIONAMENT (REQUISIT ADAPTABILITAT)
+    FUNCIONS DE REDIMENSIONAMENT (ADAPTABILITAT)
     ============================================================================================ */
 
 function resizeCanvas() {
-    // Si estem en Fullscreen, el body ja ocupa tota la pantalla i no volem la màx. altura
-    // En Fullscreen: body.clientHeight és window.innerHeight
-    // Fora Fullscreen: body.clientHeight és l'altura visible
-    
-    // Obtenim l'altura total disponible (viewport)
     const totalHeight = window.innerHeight; 
     const controlsHeight = document.getElementById('controls').offsetHeight;
     
-    // Si NO estem en pantalla completa, limitem l'altura per deixar espai als controls
     const isFullscreen = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement;
 
     let containerHeight;
     if (isFullscreen) {
         // En mode fullscreen, volem que el canvas ocupi tot l'espai menys els controls
         containerHeight = totalHeight - controlsHeight;
-        document.body.style.overflow = 'hidden'; // Evita scrollbars
+        document.body.style.overflow = 'hidden';
     } else {
         // Fora de fullscreen, mantenim la lògica original: tot l'espai menys controls i un marge (20px)
-        containerHeight = document.body.clientHeight - controlsHeight - 20;
-        document.body.style.overflow = 'hidden'; // Mantenim amagat per l'estil inicial
+        // Utilitzem clientHeight per assegurar que l'espai és el disponible abans de fer scroll
+        containerHeight = document.body.clientHeight - controlsHeight - 20; 
+        document.body.style.overflow = 'hidden'; 
     }
 
     const aspectRatio = 900 / 500;
@@ -306,8 +307,6 @@ function resizeCanvas() {
         newWidth = newHeight * aspectRatio;
     }
     
-    // Aquesta comprovació només és necessària si estem fora de fullscreen, 
-    // ja que l'amplada i altura s'ajusten al contenidor (body)
     if (newWidth > window.innerWidth) {
         newWidth = window.innerWidth;
         newHeight = newWidth / aspectRatio;
@@ -328,12 +327,12 @@ function resizeCanvas() {
 
 window.addEventListener('resize', resizeCanvas);
 
-// NOVA LÍNIA: PANTALLA COMPLETA - Escolta els canvis d'estat de Fullscreen
+// NOVES LÍNIES: PANTALLA COMPLETA - Escolta els canvis d'estat de Fullscreen per reajustar el canvas
 document.addEventListener('fullscreenchange', resizeCanvas);
 document.addEventListener('webkitfullscreenchange', resizeCanvas);
 document.addEventListener('mozfullscreenchange', resizeCanvas);
 document.addEventListener('MSFullscreenChange', resizeCanvas);
-// FI NOVES LÍNIES: PANTALLA COMPLETA
+
 
 resizeCanvas(); 
 
@@ -343,11 +342,10 @@ resizeCanvas();
 
 function handleTouch(e, isPressed, direction) {
     e.preventDefault(); 
-    // Evita l'acció si no estem jugant, excepte per al botó de regal (si es vol)
     if (estat !== "playing" && direction !== "gift") return; 
 
     if (direction === "gift") {
-        if (isPressed && !isShooting && estat === "playing") { // Només dispara si estem jugant
+        if (isPressed && !isShooting && estat === "playing") { 
             regals.push({
                 x: santa.x + santa.w / 2 - 5, y: santa.y + santa.h, w: 10, h: 10
             });
@@ -379,15 +377,16 @@ function setupTouchControls() {
 setupTouchControls();
 
 /* ============================================================================================
-    CONTROLS D'ESTAT (PAUSA I NOU START)
+    CONTROLS D'ESTAT (PAUSA, START I FULLSCREEN)
     ============================================================================================ */
 // NOVA FUNCIÓ: PANTALLA COMPLETA
 function toggleFullscreen() {
+    // Utilitzem document.documentElement (l'etiqueta <html>) per a la compatibilitat màxima
     const doc = document.documentElement;
     const fullscreenElement = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement;
 
     if (!fullscreenElement) {
-        // Entrar en mode pantalla completa al body (incloent-hi els controls)
+        // Entrar en mode pantalla completa a tot el document
         if (doc.requestFullscreen) {
             doc.requestFullscreen();
         } else if (doc.webkitRequestFullscreen) { /* Safari */
@@ -409,8 +408,9 @@ function toggleFullscreen() {
             document.msExitFullscreen();
         }
     }
-    // Reajusta el canvas després del canvi (encara que ja ho fem amb l'esdeveniment)
+    // Reajusta el canvas després del canvi i actualitza el botó
     setTimeout(resizeCanvas, 100); 
+    actualitzaTextBoto();
 }
 
 // NOVA LÍNIA: PANTALLA COMPLETA - Maneig del botó
@@ -457,7 +457,6 @@ function togglePause() {
 
 // MODIFICADA: Ara també gestiona la visibilitat del botó START
 function actualitzaTextBoto() {
-    // ... [Manté el codi de la funció actualitzaTextBoto]
     if (estat === "playing") {
         pauseBtn.textContent = "Pausa";
         pauseBtn.style.display = "block";
@@ -479,10 +478,10 @@ function actualitzaTextBoto() {
         pauseBtn.style.display = "block";
         startBtn.style.display = "none";
     }
+    
     // NOVA LÍNIA: PANTALLA COMPLETA - Actualitza el text del botó Fullscreen
     const isFullscreen = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement;
     fullscreenBtn.textContent = isFullscreen ? "Pant. Normal" : "Pant. Comp.";
-    // FI NOVES LÍNIES: PANTALLA COMPLETA
 }
 
 /* ============================================================================================
@@ -490,7 +489,6 @@ function actualitzaTextBoto() {
     ============================================================================================ */
 
 function update() {
-    // ... [Manté el codi de la funció update]
     if (estat !== "playing") return;
 
     updateNeu();
@@ -585,7 +583,6 @@ function update() {
     ============================================================================================ */
 
 function draw() {
-    // ... [Manté la resta del codi]
     ctx.save();
     const scaleX = canvas.width / 900;
     const scaleY = canvas.height / 500;
@@ -600,7 +597,7 @@ function draw() {
             [
                 "Utilitza els botons tàctils per moure i llençar regals.",
                 "Evita ocells i cases · Teulada = 1 punt · Xemeneia = 2 punts",
-                "Prem 'Començar' per jugar" // Text actualitzat
+                "Prem 'Començar' per jugar" 
             ]
         );
     }
@@ -619,7 +616,7 @@ function draw() {
                 "Punts: " + punts,
                 "Millor racha: " + millorCombo
             ],
-            ["Prem 'Torna a Jugar' per reintentar"] // Text actualitzat
+            ["Prem 'Torna a Jugar' per reintentar"] 
         );
     }
     
@@ -630,8 +627,6 @@ function draw() {
     LOOP PRINCIPAL DEL JOC
     ============================================================================================ */
 function loop() {
-    // Eliminat: L'inici amb moviment tàctil ja no és necessari gràcies al botó Start.
-    
     update();
     draw();
     requestAnimationFrame(loop);
@@ -640,7 +635,6 @@ function loop() {
 // =============================================================================================
 // * REINSERCIÓ DE FUNCIONS AUXILIARS DE LÒGICA I DIBUIX *
 // =============================================================================================
-// ... [Manté totes les funcions auxiliars sense canvis]
 
 function rgba(r, g, b, a) {
     return `rgba(${r},${g},${b},${a})`;
@@ -960,7 +954,6 @@ function dibuixaPanell(textLines, subTextLines = []) {
 
     ctx.textAlign = "left";
 }
-
 
 // Inicia el bucle principal
 loop(); 
